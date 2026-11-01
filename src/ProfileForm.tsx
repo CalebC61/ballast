@@ -42,6 +42,8 @@ export function ProfileForm({ initial, onSave, submitLabel }: { initial: Profile
         {DATA.programs.find(x => x.id === p.programId)?.countBackFromEvent && <div className="row"><label>Event date</label><input type="date" value={p.eventDate ?? ''} onChange={e => set({ eventDate: e.target.value })} /></div>}
         <div className="row"><label>Days / week</label><input type="number" min={2} max={6} value={p.daysPerWeek} onChange={e => set({ daysPerWeek: num(e.target.value) })} /></div>
         <div className="row"><label>Session (min)</label><input type="number" min={15} max={120} value={p.sessionMinutes} onChange={e => set({ sessionMinutes: num(e.target.value) })} /></div>
+        <div className="row"><label>Rest, main lifts (s)</label><input type="number" min={15} step={15} value={p.restCompound ?? 120} onChange={e => set({ restCompound: num(e.target.value) })} /></div>
+        <div className="row"><label>Rest, accessories (s)</label><input type="number" min={15} step={15} value={p.restAccessory ?? 90} onChange={e => set({ restAccessory: num(e.target.value) })} /></div>
         <div className="row"><label><input type="checkbox" checked={p.unlockAdvanced} onChange={e => set({ unlockAdvanced: e.target.checked })} /> I can already do snatches, throws and overhead work safely (unlock advanced moves)</label></div>
       </section>
       <section className="card"><h3>Anything that hurts?</h3>

@@ -6,12 +6,12 @@ export interface Kettlebell { id: string; weight: number }
 export interface Profile {
   units: Units; bodyweight: number; bags: Bag[]; kettlebells: Kettlebell[];
   experience: 1 | 2 | 3; programId: string; eventDate?: string; startDate: string;
-  daysPerWeek: number; sessionMinutes: number; excluded: string[]; painAreas: string[]; unlockAdvanced: boolean;
+  daysPerWeek: number; sessionMinutes: number; excluded: string[]; painAreas: string[]; unlockAdvanced: boolean; restCompound?: number; restAccessory?: number;
 }
 export interface Exercise { id: string; name: string; pattern: string; hold: string; stance: string; plane: string; level: number; ballistic: boolean; overhead: boolean; needsHandles: boolean; usesBag: boolean; dose: 'reps' | 'time' | 'distance'; cue: string; demoSearch: string; ladder: string }
 export interface Ladder { id: string; pattern: string; rungs: string[] }
 export interface Factors { position: Record<string, number>; stance: Record<string, number>; plane: Record<string, number>; grip: Record<string, number> }
-export interface EngineCfg { eliCapPct: number; returnAfterDays: number; returnVolumePct: number; beatUpVolumeCut: number; painExcludeDays: number; weeklyHardSets: Record<string, [number, number]> }
+export interface EngineCfg { eliCapPct: number; returnAfterDays: number; returnVolumePct: number; beatUpVolumeCut: number; painExcludeDays: number; weeklyHardSets: Record<string, [number, number]>; rest?: { compound: number; accessory: number } }
 export interface Block { name: string; weeks: number; repRange: [number, number]; rir: number; focus: string; deload: boolean }
 export interface DayTemplate { name: string; slots: string[]; finisherFormats: string[] }
 export interface Program { id: string; name: string; weeks: number; daysPerWeek: number; countBackFromEvent?: boolean; blocks: Block[]; dayTemplates: DayTemplate[]; default?: boolean }
@@ -23,7 +23,12 @@ export interface SessionItem {
   sets: number; reps: number[]; dose: 'reps' | 'time' | 'distance'; amount?: number; reasons: string[]; anchor?: boolean;
 }
 export interface Finisher { formatId: string; minutes: number; items: { exerciseId: string; name: string; amount: string; load?: Load }[] }
-export interface Session { date: string; dayName: string; programId: string; blockName: string; week: number; deload: boolean; readiness: Readiness; minutes: number; items: SessionItem[]; finisher?: Finisher; why: string; reasons: string[] }
+export type ClockMode = 'rest' | 'emom' | 'amrap' | 'fortime' | 'tabata' | 'countup';
+export interface ClockCfg { mode: ClockMode; minutes: number; window?: number; work?: number; rest?: number; rounds?: number }
+export interface BlockExercise { exerciseId: string; name: string; sets: number; reps: number[]; dose: 'reps' | 'time' | 'distance'; amount?: number | string; load?: Load; cue: string; itemIdx?: number; tag?: string }
+export interface WorkoutBlock { id: string; kind: 'warmup' | 'main' | 'finisher' | 'cooldown'; title: string; formatId: string; formatName: string; summary: string; howTo: string[]; clock: ClockCfg; restSec?: number; rounds?: number; exercises: BlockExercise[] }
+export type SessionKind = 'full' | 'wod';
+export interface Session { kind?: SessionKind; blocks: WorkoutBlock[]; date: string; dayName: string; programId: string; blockName: string; week: number; deload: boolean; readiness: Readiness; minutes: number; items: SessionItem[]; finisher?: Finisher; why: string; reasons: string[] }
 export interface ItemResult { exerciseId: string; ladder: string; repsDone: number[]; rating?: Rating; pain?: string; deload?: boolean }
 export interface LogEntry { id: string; date: string; kind: 'session' | 'offplan'; session?: Session; results?: ItemResult[]; note?: string; offplan?: { type: string; minutes: number; effort: 'low' | 'moderate' | 'hard' }; finisherScore?: string }
 export interface AppState { patterns: Record<string, PatternState>; paused: Record<string, string>; weekSetAdj: number; weekAdjFor?: string; log: LogEntry[] }

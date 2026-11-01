@@ -62,5 +62,9 @@
     "no space",
     "don't like it",
     "hurts"
-  ]
+  ],
+  "rest": {
+    "compound": 120,
+    "accessory": 90
+  }
 }

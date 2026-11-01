@@ -1,8 +1,9 @@
-import type { AppState, Data, Exercise, Finisher, Profile, Readiness, Session, SessionItem } from './types';
+import type { AppState, Data, Exercise, Finisher, Profile, Readiness, Session, SessionItem, SessionKind } from './types';
+import { buildBlocks } from './blocks';
 import { addDays, daysBetween, eli, exById, hashSeed, rng, snapToBag } from './core';
 import { getProgram, programPosition, weekStart } from './program';
 
-export interface BuildOpts { date: string; readiness: Readiness; minutes: number; swaps?: Record<string, string>; extraExclude?: string[] }
+export interface BuildOpts { date: string; readiness: Readiness; minutes: number; swaps?: Record<string, string>; extraExclude?: string[]; kind?: SessionKind }
 
 export function isEligible(ex: Exercise, p: Profile, st: AppState, date: string, readiness: Readiness, exclude: string[]): boolean {
   if (p.excluded.includes(ex.id) || exclude.includes(ex.id)) return false;
@@ -91,8 +92,9 @@ export function buildSession(d: Data, p: Profile, st: AppState, o: BuildOpts): S
     return null;
   };
 
+  const kind: SessionKind = o.kind ?? 'full';
   const items: SessionItem[] = [];
-  for (const slot of tmpl.slots) {
+  if (kind === 'full') for (const slot of tmpl.slots) {
     const [kind, arg] = slot.split(':');
     if (kind === 'warmup' || kind === 'finisher') continue;
     if (kind === 'power') { if (o.readiness === 'beat') { reasons.push('BEAT_UP'); continue; } const it = pickFromPattern('power', 'power'); if (it) items.push(it); }
@@ -102,15 +104,21 @@ export function buildSession(d: Data, p: Profile, st: AppState, o: BuildOpts): S
   }
   // Guardrail 6: weekly pull + carry + anti-rotation
   const has = (pat: string) => items.some(i => exById(d, i.exerciseId)?.pattern === pat) || (weekly[pat] ?? 0) > 0;
-  for (const must of ['pull', 'carry', 'core']) if (!has(must)) { const it = pickFromPattern(must, must); if (it) { it.reasons.push('WEEKLY_MUST'); items.push(it); } }
+  if (kind === 'full') for (const must of ['pull', 'carry', 'core']) if (!has(must)) { const it = pickFromPattern(must, must); if (it) { it.reasons.push('WEEKLY_MUST'); items.push(it); } }
 
   let finisher: Finisher | undefined;
-  if (tmpl.slots.includes('finisher')) finisher = buildFinisher(d, p, st, o, tmpl.finisherFormats[Math.floor(r() * tmpl.finisherFormats.length)], used, r, prog.id === 'hybrid');
+  if (kind === 'wod') {
+    const wodFormats = ['emom', 'amrap', 'fortime', 'tabata', ...tmpl.finisherFormats.filter(f => !['emom', 'amrap', 'fortime', 'tabata'].includes(f))];
+    finisher = buildFinisher(d, p, st, o, wodFormats[Math.floor(r() * wodFormats.length)], used, r, prog.id === 'hybrid', 4);
+    finisher.minutes = Math.max(8, Math.min(finisher.formatId === 'tabata' ? finisher.minutes : 25, o.minutes - 10));
+  } else if (tmpl.slots.includes('finisher')) finisher = buildFinisher(d, p, st, o, tmpl.finisherFormats[Math.floor(r() * tmpl.finisherFormats.length)], used, r, prog.id === 'hybrid');
 
   // fit time: warmup 5 + items + finisher; drop finisher, then pair, never anchor
   const est = () => 5 + items.reduce((s, i) => s + i.sets * 2, 0) + (finisher?.minutes ?? 0);
   let shortened = false;
   if (est() > o.minutes && finisher) { const room = o.minutes - (est() - finisher.minutes); if (room >= 6) finisher.minutes = Math.floor(room); else finisher = undefined; shortened = true; }
+  // keep a full session: trim accessory sets to 2 before removing any exercise
+  for (const it of [...items].reverse()) { while (est() > o.minutes && !it.anchor && it.sets > 2) { it.sets--; it.reps = it.reps.slice(0, it.sets); shortened = true; } }
   for (const drop of ['pair2', 'core', 'carry', 'pair', 'power']) { while (est() > o.minutes) { const i = items.findIndex(x => x.slot === drop && !x.anchor); if (i < 0) break; items.splice(i, 1); shortened = true; } }
   while (est() > o.minutes) { const a = items.find(x => x.anchor); if (!a || a.sets <= 2) break; a.sets--; a.reps = a.reps.slice(0, a.sets); shortened = true; }
   if (shortened) reasons.push('SHORTENED');
@@ -118,15 +126,16 @@ export function buildSession(d: Data, p: Profile, st: AppState, o: BuildOpts): S
   if (returning) reasons.push('RETURN');
   if (o.readiness === 'beat') reasons.push('BEAT_UP');
   const anchor = items.find(i => i.anchor);
-  const why = `${pos.block.name} block, week ${pos.week}: ${tmpl.name}. ` + (anchor ? `${anchor.name} is your anchor${anchor.reasons.includes('REP_LADDER') ? ', one more rep than last time' : ''}. ` : '') +
+  const why = kind === 'wod' ? `${pos.block.name} block, week ${pos.week}: conditioning WOD. Warm up, then one ${d.formats.find(f => f.id === finisher?.formatId)?.name ?? ''} piece.` : `${pos.block.name} block, week ${pos.week}: ${tmpl.name}. ` + (anchor ? `${anchor.name} is your anchor${anchor.reasons.includes('REP_LADDER') ? ', one more rep than last time' : ''}. ` : '') +
     ([...new Set(reasons)].map(c => d.reasons[c]).filter(Boolean)[0] ?? `Leave ${pos.block.rir} in the tank on each set.`);
-  return { date: o.date, dayName: tmpl.name, programId: prog.id, blockName: pos.block.name, week: pos.week, deload: pos.block.deload, readiness: o.readiness, minutes: o.minutes, items, finisher, why, reasons: [...new Set(reasons)] };
+  const base = { kind, date: o.date, dayName: kind === 'wod' ? 'WOD' : tmpl.name, programId: prog.id, blockName: pos.block.name, week: pos.week, deload: pos.block.deload, readiness: o.readiness, minutes: o.minutes, items, finisher, why, reasons: [...new Set(reasons)] };
+  return { ...base, blocks: buildBlocks(d, p, st, o, base, used) };
 }
 
 /** First-time ELI ceiling from experience: beginner 0.25, intermediate 0.35, advanced 0.5 of bodyweight-equivalent. */
 export function startEliMax(p: Profile) { return [0.25, 0.35, 0.5][p.experience - 1]; }
 
-function buildFinisher(d: Data, p: Profile, st: AppState, o: BuildOpts, formatId: string, used: Set<string>, r: () => number, hybrid: boolean): Finisher {
+function buildFinisher(d: Data, p: Profile, st: AppState, o: BuildOpts, formatId: string, used: Set<string>, r: () => number, hybrid: boolean, count = 3): Finisher {
   const fmt = d.formats.find(f => f.id === formatId)!;
   const pool = d.exercises.filter(e => ['locomotion', 'carry', 'lunge', 'core', 'shoulder', 'complex', 'squat'].includes(e.pattern) && !used.has(e.id) && e.level <= 3 &&
     isEligible(e, p, st, o.date, o.readiness, o.extraExclude ?? []) &&
@@ -134,13 +143,13 @@ function buildFinisher(d: Data, p: Profile, st: AppState, o: BuildOpts, formatId
   const pick = (pred: (e: Exercise) => boolean) => { const c = pool.filter(e => pred(e) && !used.has(e.id)); if (!c.length) return undefined; const e = c[Math.floor(r() * c.length)]; used.add(e.id); return e; };
   let picks: (Exercise | undefined)[];
   if (formatId === 'racesim' || (hybrid && formatId === 'ruckhybrid')) picks = [pool.find(e => e.id === 'run'), pick(e => e.id === 'walking_lunge_front_load' || e.id === 'walking_lunge_shoulder'), pick(e => e.pattern === 'carry'), pick(e => e.id === 'bag_over_burpee_shuttle' || e.id === 'sandbag_burpee_over')];
-  else picks = [pick(e => !e.ballistic && (e.pattern === 'squat' || e.pattern === 'lunge')), pick(e => e.pattern === 'carry' || e.pattern === 'locomotion'), pick(e => e.pattern === 'core')];
+  else picks = [pick(e => !e.ballistic && (e.pattern === 'squat' || e.pattern === 'lunge')), pick(e => e.pattern === 'carry' || e.pattern === 'locomotion'), pick(e => e.pattern === 'core'), ...(count > 3 ? [pick(e => e.pattern === 'shoulder' || e.pattern === 'complex' || e.pattern === 'lunge')] : [])];
   const exs = picks.filter(Boolean) as Exercise[];
   if (fmt.rules.requireNonBallistic && !exs.some(e => !e.ballistic)) { const nb = pick(e => !e.ballistic); if (nb) exs.push(nb); }
   const minutes = formatId === 'tabata' ? 4 * Math.max(1, Math.min(3, exs.length)) : formatId === 'racesim' || formatId === 'ruckhybrid' ? 20 : 12;
   const items = exs.map(e => {
     const s = e.usesBag ? snapToBag(e, startEliMax(p) * 0.8, p, d.factors) : null;
-    const amount = e.dose === 'distance' ? (e.id === 'run' ? '400 m' : '25 m') : e.dose === 'time' ? '30 s' : formatId === 'tabata' ? 'max reps' : '10 reps';
+    const amount = e.dose === 'distance' ? (e.id === 'run' ? '400 m' : '25 m') : e.dose === 'time' ? '30 s' : formatId === 'tabata' ? 'max reps' : formatId === 'emom' || formatId === 'intervals' ? '8 reps' : '10 reps';
     return { exerciseId: e.id, name: e.name, amount, load: s?.load };
   });
   return { formatId, minutes, items };

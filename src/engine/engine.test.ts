@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { DATA as d, eli, ownedLoads, snapToBag, buildSession, adapt, weeklyAdjust, exById, programPosition, getProgram } from './index';
+import { DATA as d, eli, ownedLoads, snapToBag, buildSession, adapt, weeklyAdjust, exById, programPosition, getProgram, describeFormat, clockFor, clockView } from './index';
+const DATA_V2 = d;
 import type { AppState, Profile } from './types';
 import fs from 'fs'; import path from 'path';
 
@@ -135,5 +136,51 @@ describe('nothing hard-coded about the user', () => {
     expect(d.exercises.length).toBeGreaterThanOrEqual(100);
     for (const l of d.ladders) for (const id of l.rungs) expect(exById(d, id)).toBeTruthy();
     expect(Object.keys(d.reasons).length).toBe(16); expect(d.formats.length).toBe(18);
+  });
+});
+
+describe('v2: full sessions, formats, clock', () => {
+  const dd = DATA_V2;
+  const P = (o: any = {}) => ({ units: 'lb', bodyweight: 180, bags: [{ id: 'a', name: 'Bag', weight: 50, handles: true, adjustable: false }, { id: 'b', name: 'Heavy', weight: 80, handles: false, adjustable: false }], kettlebells: [], experience: 2, programId: 'hybrid', eventDate: '', startDate: '2026-10-26', daysPerWeek: 4, sessionMinutes: 45, excluded: [], painAreas: [], unlockAdvanced: false, ...o }) as any;
+  const E = () => ({ patterns: {}, paused: {}, weekSetAdj: 0, log: [] }) as any;
+  const dates = ['2026-11-02', '2026-11-03', '2026-11-05', '2026-11-07'];
+  it('every full session has warm-up, at least 3 main exercises, and a cool-down, even at 25 min', () => {
+    for (const programId of ['hybrid', 'foundation']) for (const minutes of [25, 30, 45, 60]) for (const date of dates) {
+      const s2 = buildSession(dd, P({ programId }), E(), { date, readiness: 'normal', minutes });
+      expect(s2.blocks[0].kind).toBe('warmup'); expect(s2.blocks[0].exercises.length).toBeGreaterThanOrEqual(2);
+      expect(s2.blocks.filter(b => b.kind === 'main').reduce((a, b) => a + b.exercises.length, 0)).toBeGreaterThanOrEqual(3);
+      expect(s2.blocks.at(-1)!.kind).toBe('cooldown');
+    }
+  });
+  it('45+ minute full sessions include a finisher block with 3+ movements', () => {
+    for (const date of dates) { const s2 = buildSession(dd, P(), E(), { date, readiness: 'normal', minutes: 60 }); const f = s2.blocks.find(b => b.kind === 'finisher')!; expect(f).toBeTruthy(); expect(f.exercises.length).toBeGreaterThanOrEqual(3); }
+  });
+  it('WOD mode: warm-up plus a multi-movement conditioning block', () => {
+    for (const date of dates) { const w = buildSession(dd, P(), E(), { date, readiness: 'normal', minutes: 30, kind: 'wod' });
+      const f = w.blocks.find(b => b.kind === 'finisher')!; expect(f.exercises.length).toBeGreaterThanOrEqual(3); expect(w.blocks[0].kind).toBe('warmup'); expect(f.title).toBe('WOD'); }
+  });
+  it('every block states a format and plain-language how-to with no unfilled numbers', () => {
+    for (const kind of ['full', 'wod'] as const) for (const date of dates) for (const b of buildSession(dd, P(), E(), { date, readiness: 'normal', minutes: 60, kind }).blocks) {
+      expect(b.formatName.length).toBeGreaterThan(2); expect(b.summary.length).toBeGreaterThan(3); expect(b.howTo.length).toBeGreaterThanOrEqual(2);
+      expect(b.howTo.join(' ') + b.summary).not.toMatch(/undefined|NaN/);
+    }
+  });
+  it('describeFormat covers EMOM / AMRAP / For Time / Tabata with the right names', () => {
+    expect(describeFormat('emom', clockFor('emom', 12), 3).name).toBe('EMOM');
+    expect(describeFormat('amrap', clockFor('amrap', 12), 3).name).toBe('AMRAP');
+    expect(describeFormat('fortime', clockFor('fortime', 12), 3, 3).name).toBe('For Time');
+    expect(describeFormat('tabata', clockFor('tabata', 4), 1).summary).toContain('20s work / 10s rest');
+  });
+  it('supersets pair exercises and rest values come from the profile', () => {
+    const s2 = buildSession(dd, P({ restAccessory: 75, restCompound: 150 }), E(), { date: '2026-11-02', readiness: 'normal', minutes: 60 });
+    const ss = s2.blocks.find(b => b.formatId === 'superset')!; expect(ss.exercises.length).toBeGreaterThanOrEqual(2); expect(ss.restSec).toBe(75);
+    expect(s2.blocks.find(b => b.title.includes('Main lift'))!.restSec).toBe(150);
+  });
+  it('clockView: EMOM minutes, AMRAP countdown, Tabata work/rest, rest done', () => {
+    expect(clockView({ mode: 'emom', minutes: 10, window: 60 }, 65).sub).toBe('Minute 2 of 10');
+    expect(clockView({ mode: 'amrap', minutes: 12 }, 60, 2).big).toBe('11:00');
+    expect(clockView({ mode: 'tabata', minutes: 4, work: 20, rest: 10, rounds: 8 }, 25).sub).toBe('Rest · round 1 of 8');
+    expect(clockView({ mode: 'rest', minutes: 1.5 }, 91).done).toBe(true);
+    expect(clockView({ mode: 'fortime', minutes: 15 }, 61).big).toBe('1:01');
   });
 });

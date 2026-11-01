@@ -25,3 +25,17 @@ button:disabled{opacity:.4}button.x{padding:8px 11px}button.link{background:none
 nav{position:fixed;bottom:0;left:0;right:0;display:flex;gap:4px;padding:8px;background:#0c0c0c;border-top:1px solid #2a2a2a;padding-bottom:max(8px,env(safe-area-inset-bottom))}nav button{flex:1}
 .clock{font-size:96px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;margin-top:20px}.clock.rest{color:var(--easy)}
 .sub{font-size:20px;margin-bottom:16px}.controls{display:flex;gap:8px}.controls button{flex:1;padding:16px}
+.banner{position:sticky;top:0;z-index:20;background:#0c0c0c;border:1px solid #333;border-radius:0 0 14px 14px;margin:-12px -12px 8px;padding:10px 14px 12px;box-shadow:0 6px 16px #000a}
+.bantop{display:flex;justify-content:space-between;font-size:13px;font-variant-numeric:tabular-nums;gap:8px}
+.banclock{font-size:52px;font-weight:800;text-align:center;font-variant-numeric:tabular-nums;line-height:1.05}.banclock.rest{color:var(--easy)}.banclock.done{color:var(--acc)}
+.bansub{text-align:center;font-size:16px;margin:2px 0 6px}.bannext{text-align:center;font-size:13px}
+.bantools{display:flex;gap:6px}.bantools button{flex:1;padding:10px}button.go{background:var(--acc);color:#111;font-weight:700}button.wide{width:100%}
+.bhead{display:flex;justify-content:space-between;align-items:center;gap:8px}.bhead h3{margin:0}
+.fmt{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:#33302a;color:var(--acc);white-space:nowrap}
+.fmt.f-emom{background:#1f3347;color:#8cc3ff}.fmt.f-amrap{background:#3b2140;color:#e6a1f0}.fmt.f-tabata{background:#40211f;color:#ff9d8f}.fmt.f-fortime{background:#203a2a;color:#8fe0a8}
+.summary{font-weight:600;margin:6px 0 2px}.howto{margin:4px 0 8px;padding-left:20px;font-size:14px;color:#cfc9bf}.howto li{margin:2px 0}
+.block.cur{outline:2px solid var(--acc)}
+.ex{border-top:1px solid #2c2c2c;padding:8px 0}.tag{display:inline-block;font-size:11px;font-weight:800;color:#111;background:var(--acc);border-radius:6px;padding:1px 5px;margin-right:6px}
+.set{display:flex;flex-direction:column;align-items:center;gap:4px}.set input{width:56px;text-align:center}.set .chk{width:56px;padding:8px 0;font-weight:700}.set.on .chk{background:var(--easy);color:#111}
+.sets{flex-wrap:wrap}.exlinks{margin-top:2px}.more{padding:4px 0}
+button.sticky{position:sticky;bottom:72px}
