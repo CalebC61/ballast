@@ -1,0 +1,18 @@
+{
+  "ANCHOR": "Anchor lift for this block, kept the same so progress is measurable.",
+  "REP_LADDER": "Last time was Hard, so the same load with one more rep on one set.",
+  "RUNG_UP": "You rated it Easy or topped the range, so it moved up a rung.",
+  "RUNG_DOWN": "Missed target or pain flag, so it dropped a rung.",
+  "BAG_UP": "Topped the range, and a heavier bag is within the safe jump.",
+  "BAG_SNAP": "Snapped to the closest bag you own.",
+  "CAP_HOLD": "The next step was too big a jump, so reps carry the progress.",
+  "PAT_NEED": "This pattern is behind its weekly target.",
+  "WEEKLY_MUST": "Every week needs a pull, a carry and an anti-rotation move.",
+  "POWER_FIRST": "Power goes first while you are fresh.",
+  "BEAT_UP": "You checked in beat up, so volume is cut and ballistic moves swapped out.",
+  "RETURN": "Welcome back: first session at reduced volume after time off.",
+  "DELOAD": "Deload week: lighter on purpose; it does not count toward progression.",
+  "SHORTENED": "Trimmed to fit your time: finisher first, never the anchor.",
+  "EXCLUDED": "A move you excluded or flagged was replaced.",
+  "RACE_SPECIFIC": "Race-specific work for your HYROX block."
+}

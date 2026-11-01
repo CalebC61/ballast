@@ -1,0 +1,219 @@
+[
+  {
+    "id": "squat",
+    "pattern": "squat",
+    "rungs": [
+      "sandbag_box_squat",
+      "bear_hug_squat",
+      "front_loaded_squat",
+      "zercher_squat",
+      "pause_zercher_squat",
+      "shoulder_squat",
+      "cossack_squat_bear_hug",
+      "overhead_squat"
+    ]
+  },
+  {
+    "id": "squat_alt",
+    "pattern": "squat",
+    "rungs": [
+      "goblet_sandbag_squat",
+      "squat_to_press_out",
+      "offset_squat"
+    ]
+  },
+  {
+    "id": "hinge",
+    "pattern": "hinge",
+    "rungs": [
+      "sandbag_deadlift",
+      "romanian_deadlift",
+      "staggered_rdl",
+      "suitcase_deadlift",
+      "single_leg_rdl",
+      "single_leg_suitcase_rdl"
+    ]
+  },
+  {
+    "id": "hinge_alt",
+    "pattern": "hinge",
+    "rungs": [
+      "bear_hug_good_morning",
+      "sandbag_swing",
+      "rotational_deadlift",
+      "sandbag_hip_thrust",
+      "single_leg_hip_thrust",
+      "sandbag_glute_bridge_march"
+    ]
+  },
+  {
+    "id": "lunge",
+    "pattern": "lunge",
+    "rungs": [
+      "bear_hug_split_squat",
+      "bear_hug_reverse_lunge",
+      "front_loaded_reverse_lunge",
+      "zercher_reverse_lunge",
+      "shoulder_reverse_lunge",
+      "lateral_lunge_front_load",
+      "rotational_lunge"
+    ]
+  },
+  {
+    "id": "lunge_alt",
+    "pattern": "lunge",
+    "rungs": [
+      "sandbag_step_up",
+      "walking_lunge_shoulder",
+      "walking_lunge_front_load",
+      "curtsy_lunge",
+      "bulgarian_split_squat",
+      "skater_squat_bear_hug"
+    ]
+  },
+  {
+    "id": "vpress",
+    "pattern": "vpress",
+    "rungs": [
+      "half_kneeling_press",
+      "standing_overhead_press",
+      "push_press",
+      "split_stance_press",
+      "offset_press",
+      "sandbag_thruster",
+      "rotational_press"
+    ]
+  },
+  {
+    "id": "vpress_alt",
+    "pattern": "vpress",
+    "rungs": [
+      "floor_press_to_overhead_pullover",
+      "kneeling_around_the_world",
+      "shoulder_to_overhead"
+    ]
+  },
+  {
+    "id": "hpress",
+    "pattern": "hpress",
+    "rungs": [
+      "sandbag_floor_press",
+      "push_up_with_bag_drag",
+      "sandbag_chest_press_out",
+      "weighted_push_up"
+    ]
+  },
+  {
+    "id": "pull",
+    "pattern": "pull",
+    "rungs": [
+      "bent_over_row",
+      "neutral_grip_row",
+      "single_arm_row",
+      "gorilla_row",
+      "sandbag_high_pull",
+      "sandbag_drag"
+    ]
+  },
+  {
+    "id": "pull_alt",
+    "pattern": "pull",
+    "rungs": [
+      "sandbag_pullover_row",
+      "upright_row",
+      "bear_crawl_bag_drag",
+      "sandbag_rear_delt_fly_pull",
+      "sled_style_backward_drag"
+    ]
+  },
+  {
+    "id": "carry",
+    "pattern": "carry",
+    "rungs": [
+      "bear_hug_carry",
+      "front_loaded_carry",
+      "zercher_carry",
+      "suitcase_carry",
+      "shoulder_carry",
+      "overhead_carry"
+    ]
+  },
+  {
+    "id": "carry_alt",
+    "pattern": "carry",
+    "rungs": [
+      "farmer_carry_handles",
+      "offset_carry",
+      "bag_drag_walk",
+      "sandbag_run_carry"
+    ]
+  },
+  {
+    "id": "shoulder",
+    "pattern": "shoulder",
+    "rungs": [
+      "bag_lap_and_stand",
+      "ground_to_shoulder",
+      "half_kneeling_shoulder",
+      "shoulder_and_squat",
+      "rotational_shoulder",
+      "over_the_shoulder_toss"
+    ]
+  },
+  {
+    "id": "power",
+    "pattern": "power",
+    "rungs": [
+      "sandbag_clean",
+      "hang_clean",
+      "clean_and_press",
+      "sandbag_snatch",
+      "forward_toss",
+      "rotational_throw",
+      "clean_to_lunge",
+      "squat_clean_thruster",
+      "sandbag_burpee_over",
+      "power_clean_drop"
+    ]
+  },
+  {
+    "id": "core",
+    "pattern": "core",
+    "rungs": [
+      "dead_bug_bag_hold",
+      "plank_bag_pull_through",
+      "half_kneeling_chop",
+      "half_kneeling_lift",
+      "sandbag_russian_twist",
+      "around_the_world",
+      "sandbag_sit_up",
+      "suitcase_march",
+      "hollow_hold_bag_press",
+      "side_plank_bag_row"
+    ]
+  },
+  {
+    "id": "loco",
+    "pattern": "locomotion",
+    "rungs": [
+      "bag_over_burpee_shuttle",
+      "bear_crawl",
+      "sandbag_shuttle_run",
+      "broad_jump",
+      "run",
+      "ruck_walk",
+      "farmer_shuffle"
+    ]
+  },
+  {
+    "id": "complex",
+    "pattern": "complex",
+    "rungs": [
+      "deadlift_row_clean_complex",
+      "clean_squat_press_complex",
+      "shoulder_lunge_complex",
+      "clean_thruster_toss_complex",
+      "hinge_hug_carry_complex"
+    ]
+  }
+]

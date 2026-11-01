@@ -1,0 +1,66 @@
+{
+  "eliCapPct": 15,
+  "returnAfterDays": 14,
+  "returnVolumePct": 80,
+  "beatUpVolumeCut": 30,
+  "painExcludeDays": 14,
+  "weeklyHardSets": {
+    "squat": [
+      6,
+      10
+    ],
+    "hinge": [
+      6,
+      10
+    ],
+    "lunge": [
+      4,
+      8
+    ],
+    "vpress": [
+      6,
+      10
+    ],
+    "hpress": [
+      3,
+      6
+    ],
+    "pull": [
+      8,
+      12
+    ],
+    "carry": [
+      3,
+      6
+    ],
+    "core": [
+      4,
+      8
+    ],
+    "shoulder": [
+      3,
+      6
+    ],
+    "power": [
+      3,
+      6
+    ]
+  },
+  "painAreas": [
+    "shoulder",
+    "elbow",
+    "wrist/hand",
+    "neck",
+    "lower back",
+    "hip",
+    "knee",
+    "ankle/foot"
+  ],
+  "swapReasons": [
+    "too heavy",
+    "too easy",
+    "no space",
+    "don't like it",
+    "hurts"
+  ]
+}

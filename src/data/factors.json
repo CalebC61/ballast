@@ -1,0 +1,38 @@
+{
+  "_note": "ELI = (bag / bodyweight) x position x stance x plane x grip. All values are assumptions; edit freely.",
+  "position": {
+    "handles": 1,
+    "lap": 1,
+    "back": 1,
+    "bear_hug": 1.05,
+    "vertical_hug": 1.05,
+    "front_rack": 1.1,
+    "zercher": 1.15,
+    "suitcase": 1.2,
+    "offset": 1.2,
+    "shoulder": 1.25,
+    "overhead": 1.4
+  },
+  "stance": {
+    "floor": 0.9,
+    "supported": 0.9,
+    "bilateral": 1,
+    "half_kneeling": 1,
+    "staggered": 1.1,
+    "moving": 1.1,
+    "split": 1.15,
+    "lateral": 1.2,
+    "pivot": 1.2,
+    "single_leg": 1.3
+  },
+  "plane": {
+    "sagittal": 1,
+    "frontal": 1.1,
+    "multi": 1.15,
+    "transverse": 1.2
+  },
+  "grip": {
+    "handles": 1,
+    "no_handles": 1.1
+  }
+}

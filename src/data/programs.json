@@ -1,0 +1,231 @@
+[
+  {
+    "id": "hybrid",
+    "name": "Hybrid / HYROX",
+    "default": true,
+    "weeks": 12,
+    "daysPerWeek": 4,
+    "countBackFromEvent": true,
+    "blocks": [
+      {
+        "name": "Base",
+        "weeks": 3,
+        "repRange": [
+          8,
+          12
+        ],
+        "rir": 3,
+        "focus": "Build aerobic base and positions",
+        "deload": false
+      },
+      {
+        "name": "Deload",
+        "weeks": 1,
+        "repRange": [
+          8,
+          10
+        ],
+        "rir": 4,
+        "focus": "Recover",
+        "deload": true
+      },
+      {
+        "name": "Build",
+        "weeks": 3,
+        "repRange": [
+          6,
+          10
+        ],
+        "rir": 2,
+        "focus": "More load and race density",
+        "deload": false
+      },
+      {
+        "name": "Deload",
+        "weeks": 1,
+        "repRange": [
+          8,
+          10
+        ],
+        "rir": 4,
+        "focus": "Recover",
+        "deload": true
+      },
+      {
+        "name": "Peak",
+        "weeks": 2,
+        "repRange": [
+          5,
+          8
+        ],
+        "rir": 1,
+        "focus": "Race-pace stations",
+        "deload": false
+      },
+      {
+        "name": "Taper",
+        "weeks": 1,
+        "repRange": [
+          6,
+          8
+        ],
+        "rir": 3,
+        "focus": "Sharp, less volume",
+        "deload": true
+      },
+      {
+        "name": "Race",
+        "weeks": 1,
+        "repRange": [
+          5,
+          8
+        ],
+        "rir": 3,
+        "focus": "Race week",
+        "deload": false
+      }
+    ],
+    "dayTemplates": [
+      {
+        "name": "Strength + Lunge",
+        "slots": [
+          "warmup",
+          "power",
+          "primary:squat",
+          "pair:pull+core",
+          "carry",
+          "finisher"
+        ],
+        "finisherFormats": [
+          "emom",
+          "amrap"
+        ]
+      },
+      {
+        "name": "Race Engine",
+        "slots": [
+          "warmup",
+          "primary:lunge",
+          "pair:vpress+pull",
+          "carry",
+          "finisher"
+        ],
+        "finisherFormats": [
+          "racesim",
+          "intervals"
+        ]
+      },
+      {
+        "name": "Hinge + Pull",
+        "slots": [
+          "warmup",
+          "power",
+          "primary:hinge",
+          "pair:hpress+pull",
+          "core",
+          "finisher"
+        ],
+        "finisherFormats": [
+          "fortime",
+          "tabata"
+        ]
+      },
+      {
+        "name": "Long Conditioning",
+        "slots": [
+          "warmup",
+          "primary:lunge",
+          "pair:shoulder+core",
+          "carry",
+          "finisher"
+        ],
+        "finisherFormats": [
+          "racesim",
+          "ruckhybrid"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foundation",
+    "name": "Foundation",
+    "weeks": 6,
+    "daysPerWeek": 3,
+    "blocks": [
+      {
+        "name": "Learn",
+        "weeks": 2,
+        "repRange": [
+          8,
+          12
+        ],
+        "rir": 3,
+        "focus": "Learn the holds",
+        "deload": false
+      },
+      {
+        "name": "Build",
+        "weeks": 3,
+        "repRange": [
+          8,
+          12
+        ],
+        "rir": 2,
+        "focus": "Add reps and rungs",
+        "deload": false
+      },
+      {
+        "name": "Test",
+        "weeks": 1,
+        "repRange": [
+          5,
+          8
+        ],
+        "rir": 2,
+        "focus": "Retest benchmarks",
+        "deload": false
+      }
+    ],
+    "dayTemplates": [
+      {
+        "name": "Squat + Pull",
+        "slots": [
+          "warmup",
+          "primary:squat",
+          "pair:pull+core",
+          "carry",
+          "finisher"
+        ],
+        "finisherFormats": [
+          "emom"
+        ]
+      },
+      {
+        "name": "Hinge + Press",
+        "slots": [
+          "warmup",
+          "primary:hinge",
+          "pair:hpress+pull",
+          "core",
+          "finisher"
+        ],
+        "finisherFormats": [
+          "amrap"
+        ]
+      },
+      {
+        "name": "Lunge + Carry",
+        "slots": [
+          "warmup",
+          "primary:lunge",
+          "pair:vpress+pull",
+          "carry",
+          "finisher"
+        ],
+        "finisherFormats": [
+          "fortime"
+        ]
+      }
+    ]
+  }
+]

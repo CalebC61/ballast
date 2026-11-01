@@ -1,0 +1,137 @@
+[
+  {
+    "id": "strength",
+    "name": "Strength sets",
+    "timer": "rest",
+    "desc": "Sets with a rest timer between them.",
+    "rules": {}
+  },
+  {
+    "id": "emom",
+    "name": "EMOM",
+    "timer": "interval",
+    "desc": "Start the work at the top of every minute; rest what is left.",
+    "rules": {}
+  },
+  {
+    "id": "e2mom",
+    "name": "E2MOM / E3MOM",
+    "timer": "interval",
+    "desc": "Same as EMOM with 2 or 3 minute windows.",
+    "rules": {}
+  },
+  {
+    "id": "amrap",
+    "name": "AMRAP",
+    "timer": "countdown",
+    "desc": "As many rounds as possible before the clock runs out.",
+    "rules": {
+      "requireNonBallistic": true
+    }
+  },
+  {
+    "id": "fortime",
+    "name": "For Time",
+    "timer": "countup",
+    "desc": "Finish the work as fast as you can, under a cap.",
+    "rules": {}
+  },
+  {
+    "id": "chipper",
+    "name": "Chipper",
+    "timer": "countup",
+    "desc": "One long list, done once, technical lifts first.",
+    "rules": {
+      "technicalFirst": true
+    }
+  },
+  {
+    "id": "ladder",
+    "name": "Ladder",
+    "timer": "countup",
+    "desc": "Reps climb each round (1,2,3...).",
+    "rules": {}
+  },
+  {
+    "id": "deathby",
+    "name": "Death By",
+    "timer": "interval",
+    "desc": "Add one rep every minute until you cannot finish in the minute.",
+    "rules": {}
+  },
+  {
+    "id": "tabata",
+    "name": "Tabata",
+    "timer": "interval",
+    "desc": "8 rounds of 20 seconds on, 10 off.",
+    "rules": {
+      "banPatterns": [
+        "shoulder"
+      ],
+      "banOverhead": true
+    }
+  },
+  {
+    "id": "intervals",
+    "name": "Intervals",
+    "timer": "interval",
+    "desc": "Set work and rest periods.",
+    "rules": {}
+  },
+  {
+    "id": "complex",
+    "name": "Complex",
+    "timer": "rest",
+    "desc": "Several moves back to back without setting the bag down.",
+    "rules": {}
+  },
+  {
+    "id": "density",
+    "name": "Density block",
+    "timer": "countdown",
+    "desc": "Most quality reps in a fixed window.",
+    "rules": {}
+  },
+  {
+    "id": "carrymedley",
+    "name": "Carry medley",
+    "timer": "countup",
+    "desc": "Several carries in a row over set distances.",
+    "rules": {}
+  },
+  {
+    "id": "ruckhybrid",
+    "name": "Ruck hybrid",
+    "timer": "countup",
+    "desc": "Ruck segments mixed with bag work.",
+    "rules": {}
+  },
+  {
+    "id": "racesim",
+    "name": "Race simulation (HYROX)",
+    "timer": "countup",
+    "desc": "Run segments alternating with stations, race order.",
+    "rules": {}
+  },
+  {
+    "id": "benchmark",
+    "name": "Benchmark test",
+    "timer": "countup",
+    "desc": "A repeatable test to measure progress.",
+    "rules": {}
+  },
+  {
+    "id": "partner",
+    "name": "Partner (Phase 2)",
+    "timer": "countup",
+    "desc": "Split the work with a partner.",
+    "rules": {}
+  },
+  {
+    "id": "flow",
+    "name": "Flow / warm-up",
+    "timer": "countup",
+    "desc": "Easy movement prep.",
+    "rules": {}
+  }
+]
